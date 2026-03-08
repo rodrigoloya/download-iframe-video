@@ -2,14 +2,19 @@
 # requires-python = ">=3.10"
 # dependencies = [
 #     "yt-dlp",
+#     "imageio-ffmpeg",
 # ]
 # ///
 
 import yt_dlp
 import sys
+import imageio_ffmpeg
 
 def download_video(url):
     print(f"Preparando la descarga del video: {url}")
+    
+    # Obtener la ruta del ejecutable ffmpeg proveído por imageio-ffmpeg
+    ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
     
     # Opciones de configuración para yt-dlp
     ydl_opts = {
@@ -18,6 +23,9 @@ def download_video(url):
         
         # Descargar la mejor calidad disponible (video + audio)
         'format': 'bestvideo+bestaudio/best',
+        
+        # Le decimos a yt-dlp dónde encontrar el ejecutable ffmpeg
+        'ffmpeg_location': ffmpeg_exe,
         
         # Simulamos ser un navegador (User-Agent) e incluimos el Referer
         # Las plataformas como mediadelivery/BunnyCDN a veces verifican esto.
